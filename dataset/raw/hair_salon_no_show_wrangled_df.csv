@@ -1,4 +1,4 @@
-ID,book_tod,book_dow,book_category,book_staff,last_category,last_staff,last_day_services,last_receipt_tot,last_dow,last_tod,last_noshow,last_prod_flag,last_cumrev,last_cumbook,last_cumstyle,last_cumcolor,last_cumprod,last_cumcancel,last_cumnoshow,noshow,recency
+,book_tod,book_dow,book_category,book_staff,last_category,last_staff,last_day_services,last_receipt_tot,last_dow,last_tod,last_noshow,last_prod_flag,last_cumrev,last_cumbook,last_cumstyle,last_cumcolor,last_cumprod,last_cumcancel,last_cumnoshow,noshow,recency
 0,afternoon,Wednesday,STYLE,JJ,,,0,0,,,0,0,0,0,0,0,0,0,0,0,0
 1,morning,Wednesday,COLOR,JOANNE,,,0,0,,,0,0,0,0,0,0,0,0,0,0,0
 2,,Wednesday,STYLE,JJ,COLOR,JOANNE,2,262,Wednesday,morning,0,1,262,2,1,1,2,0,0,0,35

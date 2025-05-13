@@ -21,4 +21,4 @@ most_common_tod = wrangled_data['book_tod'].mode()[0]
 wrangled_data['book_tod'].fillna(most_common_tod, inplace=True)
 
 # 4. 결측치 업데이트 저장장
-wrangled_data.to_csv('datasets/hair_salon_no_show_wrangled_derived_df.csv', index=False)
+wrangled_data.to_csv('preprocessing/hair_salon_data.csv', index=False)

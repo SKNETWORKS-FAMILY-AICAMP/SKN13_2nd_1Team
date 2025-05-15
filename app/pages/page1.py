@@ -15,9 +15,9 @@ with open('../models/xgboost/label_encoders.pkl', 'rb') as f:
 categorical_cols = ['book_tod', 'book_dow', 'book_category', 'book_staff',
                     'last_category', 'last_staff', 'last_dow', 'last_tod']
 
-numeric_cols = ['last_day_services', 'last_receipt_tot', 'last_noshow', 'last_prod_flag',
+numeric_cols = ['last_day_services', 'last_noshow',
                 'last_cumrev', 'last_cumbook', 'last_cumstyle', 'last_cumcolor',
-                'last_cumprod', 'last_cumcancel', 'last_cumnoshow', 'recency',
+                'last_cumnoshow', 'recency',
                 'first_visit', 'is_revisit_30days']
 
 st.title("💇‍♀️ XGBoost 노쇼 예측기")
@@ -46,7 +46,7 @@ for col in categorical_cols:
 # 예측
 if st.button("노쇼 예측하기"):
     y_proba = model.predict_proba(input_df)[:, 1][0]
-    y_pred = int(y_proba >= 0.7)  # threshold는 0.4 예시
+    y_pred = int(y_proba >= 0.4)  # threshold는 0.4 예시
 
     st.subheader("📊 예측 결과")
     st.write(f"노쇼 확률: **{y_proba:.2%}**")

@@ -1,5 +1,8 @@
 import pandas as pd
 
+'''
+마지막 예약 정보(예약 요일, 예약 스태프, 예약 카테고리, 예약 시간대) 및 현재 예약 정보 결측치 처리
+
 wrangled_data = pd.read_csv('datasets/hair_salon_no_show_wrangled_df.csv')
 
 # 1. is_first_visit: 과거 예약 정보가 모두 결측이면 첫 방문자
@@ -20,5 +23,12 @@ wrangled_data['last_dow'].fillna('Unknown', inplace=True)
 most_common_tod = wrangled_data['book_tod'].mode()[0]
 wrangled_data['book_tod'].fillna(most_common_tod, inplace=True)
 
-# 4. 결측치 업데이트 저장장
+# 4. 결측치 업데이트 저장
 wrangled_data.to_csv('preprocessing/hair_salon_data.csv', index=False)
+'''
+
+# 히트맵 생성
+hair_salon_data = pd.read_csv('dataset/processed/hair_salon_data.csv')
+
+print(hair_salon_data.head())
+print(hair_salon_data.columns)

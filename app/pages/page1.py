@@ -4,11 +4,11 @@ import numpy as np
 import pickle
 
 # 모델 불러오기
-with open('../models/xgboost/xgboost_model.pkl', 'rb') as f:
+with open('models/xgboost/xgboost_model.pkl', 'rb') as f:
     model = pickle.load(f)
 
 # LabelEncoder 사전 (학습 시 저장한 파일이 있다고 가정)
-with open('../models/xgboost/label_encoders.pkl', 'rb') as f:
+with open('models/xgboost/label_encoders.pkl', 'rb') as f:
     encoders = pickle.load(f)
 
 # 입력 받을 범주형 컬럼
@@ -20,20 +20,26 @@ numeric_cols = ['last_day_services', 'last_noshow',
                 'last_cumnoshow', 'recency',
                 'first_visit', 'is_revisit_30days']
 
-st.title("💇‍♀️ XGBoost 노쇼 예측기")
+st.title("🌳 XGBoost 노쇼 예측기")
 
 input_dict = {}
 
-# Streamlit 입력 받기 (범주형)
+# 범주형 입력 (3개씩 한 줄에 배치)
 st.header("📋 예약 정보 입력")
-for col in categorical_cols:
-    values = encoders[col].classes_
-    input_dict[col] = st.selectbox(f"{col}", values)
+cat_cols_chunks = [categorical_cols[i:i+3] for i in range(0, len(categorical_cols), 3)]
+for chunk in cat_cols_chunks:
+    cols = st.columns(len(chunk))
+    for i, col in enumerate(chunk):
+        values = encoders[col].classes_
+        input_dict[col] = cols[i].selectbox(f"{col}", values)
 
-# Streamlit 입력 받기 (수치형)
+# 수치형 입력 (3개씩 한 줄에 배치)
 st.header("🔢 고객 수치 데이터 입력")
-for col in numeric_cols:
-    input_dict[col] = st.number_input(f"{col}", min_value=0)
+num_cols_chunks = [numeric_cols[i:i+3] for i in range(0, len(numeric_cols), 3)]
+for chunk in num_cols_chunks:
+    cols = st.columns(len(chunk))
+    for i, col in enumerate(chunk):
+        input_dict[col] = cols[i].number_input(f"{col}", min_value=0)
 
 # DataFrame 생성
 input_df = pd.DataFrame([input_dict])

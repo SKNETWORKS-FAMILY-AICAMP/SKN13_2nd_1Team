@@ -52,7 +52,7 @@ svm1 = SVC(
     C=0.1, 
     gamma=1,
     class_weight='balanced',
-    probability=True)  
+    probability=True)
 
 # 모델 학습
 svm1.fit(X_train_scaled, y_train)

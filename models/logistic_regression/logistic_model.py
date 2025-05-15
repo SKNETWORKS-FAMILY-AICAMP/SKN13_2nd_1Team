@@ -14,6 +14,8 @@ from sklearn.metrics import (
 )
 
 df = pd.read_csv('../../dataset/processed/hair_salon_data.csv')
+# df = df.drop(columns='ID')
+df = df.drop(columns=['ID', 'last_cumcancel', 'last_cumprod', 'last_prod_flag', 'last_receipt_tot'])
 
 X = df.drop(columns='noshow')
 y = df['noshow']

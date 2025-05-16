@@ -4,7 +4,7 @@ import numpy as np
 import pickle
 
 # 🔹 Pipeline 모델 로딩
-with open('models/logistic_regression/logistic_model_bundle.pkl', 'rb') as f:
+with open('../models/logistic_regression/logistic_model_bundle.pkl', 'rb') as f:
     bundle = pickle.load(f)
 
 model = bundle['model']

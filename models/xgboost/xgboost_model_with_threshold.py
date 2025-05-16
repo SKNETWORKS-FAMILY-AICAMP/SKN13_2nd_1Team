@@ -28,10 +28,11 @@ for col in categorical_cols:
 # Define feature columns
 feature_cols = [
       *categorical_cols,
-        'last_day_services', 'last_receipt_tot', 'last_noshow',
-        'last_prod_flag', 'last_cumrev', 'last_cumbook', 'last_cumstyle',
-        'last_cumcolor', 'last_cumprod', 'last_cumcancel', 'last_cumnoshow',
-        'recency','first_visit', 'is_revisit_30days']
+        'last_day_services', 'last_noshow',
+        'last_cumrev', 'last_cumbook',
+        'last_cumstyle', 'last_cumcolor',
+        'last_cumnoshow', 'recency',
+        'first_visit', 'is_revisit_30days']
 
 X = hair_salon_data[feature_cols]
 y = hair_salon_data['noshow']

@@ -1,3 +1,11 @@
+import os
+import tempfile
+
+# # 공용 설정 (Windows 한글 사용자 폴더 문제 대응)
+# os.environ['JOBLIB_TEMP_FOLDER'] = tempfile.mkdtemp(dir='C:/Temp')
+# # Windows 환경에서 한글 사용자 폴더 경로 문제로 인해
+# # joblib 임시폴더를 ASCII-only 경로로 강제 지정합니다.
+
 import pandas as pd
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.preprocessing import LabelEncoder
@@ -11,7 +19,6 @@ from xgboost import XGBClassifier
 import matplotlib.pyplot as plt
 import numpy as np
 import pickle
-import os
 
 
 # load the dataset
@@ -63,7 +70,7 @@ grid = GridSearchCV(
     cv=3,
     scoring='recall',
     verbose=1,
-    n_jobs=-1
+    n_jobs=1
 )
 
 # print(thr_best_result)

@@ -4,9 +4,9 @@ import numpy as np
 import pickle
 
 # 모델 & 인코더 로딩
-with open('../models/xgboost/xgboost_model_with_threshold.pkl', 'rb') as f:
+with open('models/xgboost/xgboost_model_with_threshold.pkl', 'rb') as f:
     model_bundle = pickle.load(f)
-with open('../models/xgboost/label_encoders.pkl', 'rb') as f:
+with open('models/xgboost/label_encoders.pkl', 'rb') as f:
     encoders = pickle.load(f)
 
 model = model_bundle['model']

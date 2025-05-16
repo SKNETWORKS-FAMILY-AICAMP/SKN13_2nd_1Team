@@ -7,26 +7,42 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
-st.title("💇‍♀️ 미용실 노쇼 분석")
+
+# 페이지 설정
+# st.set_page_config(
+#     page_title="💇‍♀️ 미용실 노쇼 대시보드",
+#     layout="wide",
+#     initial_sidebar_state="expanded"
+# )
 
 # 🗂 탭 정의
 tab1, tab2 = st.tabs(["📊 통계 분석", "💡 모델 분석"])
 
+@st.cache_data
+def load_data(path: str) -> pd.DataFrame:
+    df = pd.read_csv(path)
+    df = df.dropna(subset=['book_tod', 'book_dow'])
+    return df
+
+hair_salon_data = load_data('dataset/raw/hair_salon_no_show_wrangled_df.csv')
+
+def get_stats(data, group_col):
+    stats = (
+        data
+        .groupby(group_col)['noshow']
+        .agg(total_appointments='count', no_show_rate='mean')
+        .reset_index()
+    )
+    
+
 # =============================================
 with tab1:
-    @st.cache_data
-    def load_data(path: str) -> pd.DataFrame:
-        df = pd.read_csv(path)
-        df = df.dropna(subset=['book_tod', 'book_dow'])
-        return df
-
-    hair_salon_data = load_data('dataset/raw/hair_salon_no_show_wrangled_df.csv')
 
     # 라디오 버튼으로 뷰 선택
-    view = st.radio("Select view:", ("Time of Day", "Day of Week", "By Staff"))
+    view = st.radio("Select view:", ("시간대별", "요일별", "디자이너별"))
 
-    if view == "Time of Day":
-        st.header("⏰ No-Show Rate by Time of Day")
+    if view == "시간대별":
+        st.header("⏰ No-Show Rate by 시간대별")
         # 시간대별 집계
         stats_tod = (
             hair_salon_data
@@ -41,7 +57,7 @@ with tab1:
         # 차트
         fig, ax = plt.subplots()
         ax.bar(stats_tod['book_tod'], stats_tod['no_show_rate'])
-        ax.set_xlabel('Time of Day')
+        ax.set_xlabel('시간대별')
         ax.set_ylabel('No-Show Rate')
         ax.set_ylim(0, stats_tod['no_show_rate'].max() * 1.1)
         plt.xticks(rotation=45)
@@ -54,8 +70,8 @@ with tab1:
             "total_appointments": "{:,}"
         }))
 
-    elif view == "Day of Week":
-        st.header("📅 No-Show Rate by Day of Week")
+    elif view == "요일별":
+        st.header("📅 No-Show Rate by 요일별")
         # 요일별 집계
         stats_dow = (
             hair_salon_data
@@ -70,7 +86,7 @@ with tab1:
         # 차트
         fig, ax = plt.subplots()
         ax.bar(stats_dow['book_dow'], stats_dow['no_show_rate'])
-        ax.set_xlabel('Day of Week')
+        ax.set_xlabel('요일별')
         ax.set_ylabel('No-Show Rate')
         ax.set_ylim(0, stats_dow['no_show_rate'].max() * 1.1)
         plt.xticks(rotation=45)
@@ -83,7 +99,7 @@ with tab1:
             "total_appointments": "{:,}"
         }))
 
-    elif view == "By Staff":
+    elif view == "디자이너별":
         st.header("🧑‍💼 No-Show Rate by Staff")
         st.markdown("각 스태프(`book_staff`)별 예약 건수와 노쇼율을 보여줍니다.")
 
@@ -107,18 +123,25 @@ with tab1:
         st.pyplot(fig)
 # =============================================
 
+# 모델 분석 탭
 with tab2:
     st.title("💡 모델 분석")
-    st.markdown("""
-    ### 📍 데이터 기반 인사이트
-    - `화요일 오전`의 노쇼율이 가장 높음
-    - `STYLE` 서비스 예약 고객의 노쇼율이 높음
-    - `누적 노쇼 ≥ 2` 고객은 전체 평균의 **2.5배 이상** 노쇼함
 
-    ### ✅ 추천 전략
-    | 전략 | 설명 |
-    |------|------|
-    | 🔔 **리마인더 발송** | 노쇼 확률 50% 이상 고객에게 예약 하루 전 자동 알림 |
-    | 💰 **예약금 제도** | 노쇼 누적 2회 이상 고객에 대해 사전 결제 도입 검토 |
-    | ⛔ **예약 제한** | 최근 30일 내 3회 이상 노쇼한 고객은 온라인 예약 제한 |
-    """)
+    st.subheader("📈 모델 성능 시각화")
+    # 이미지 파일 경로 리스트 (실제 경로에 맞게 수정)
+    image_info = [
+        ("Confusion Matrix", 'models/xgboost/Evaluation Metrics/XGBoost_Threshold_ConfusionMatrix.png'),
+        ("SHAP Feature Importance", 'models/xgboost/Evaluation Metrics/shap_summary_scatter.png'),
+        ("Precision-Recall Curve", 'models/xgboost/Evaluation Metrics/PR Curve.png'),
+        ("F1 Score vs Threshold", 'models/xgboost/Evaluation Metrics/XGBoost_thresholdvsF1score.png'),
+        ("Precision/Recall/F1 vs Threshold", 'models/xgboost/Evaluation Metrics/XGBoost_Threshold_vs_Precision_Recall_F1Score.png')
+    ]
+
+    # 한 열에 두 개씩 이미지와 타이틀 배치
+    cols = None
+    for idx, (title, img_path) in enumerate(image_info):
+        if idx % 2 == 0:
+            cols = st.columns(2)
+        with cols[idx % 2]:
+            st.subheader(title)
+            st.image(img_path, use_container_width=True)

@@ -159,9 +159,9 @@ with open('models/xgboost/xgboost_model_with_threshold.pkl', 'wb') as f:
 print("✅ 모델과 threshold가 저장되었습니다.")
 
 
-# import metrics
-# metrics.plot_all_metrics(best_model, X_test, y_test, 'XGBoost')
-# metrics.plot_precision_recall_curve(best_model, X_test, y_test, "XGBoost")
+import metrics
+metrics.plot_all_metrics(best_model, X_test, y_test, 'XGBoost')
+metrics.plot_precision_recall_curve(best_model, X_test, y_test, "XGBoost")
 
 from sklearn.metrics import precision_recall_curve, auc
 
@@ -177,6 +177,20 @@ plt.ylabel('Precision')
 plt.title('Precision-Recall Curve')
 plt.legend()
 plt.grid()
+plt.show()
+
+plt.figure(figsize=(10, 6))
+plt.plot(results_df['threshold'], results_df['precision'], label='Precision', marker='o')
+plt.plot(results_df['threshold'], results_df['recall'], label='Recall', marker='o')
+plt.plot(results_df['threshold'], results_df['f1_score'], label='F1 Score', marker='o')
+
+plt.title('Threshold vs Precision / Recall / F1 Score')
+plt.xlabel('Threshold')
+plt.ylabel('Score')
+plt.xticks(results_df['threshold'], rotation=45)
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
 plt.show()
 
 # Save the model

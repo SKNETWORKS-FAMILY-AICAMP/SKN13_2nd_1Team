@@ -57,9 +57,30 @@
 
 ---
 
-## 6. 프로젝트 구조
+## 6. 프로젝트 폴더 구조
 
-📁 프로젝트 구조 예시 이미지 또는 트리 삽입 예정
+```
+📁SKN13_2nd_1Team
+├─ app
+│  ├─ app.py
+│  └─ pages
+├─ dataset
+│  ├─ processed
+│  └─ raw
+├─ images
+├─ models
+│  ├─ knn
+│  ├─ logistic_regression
+│  ├─ random_forest
+│  ├─ SVM
+│  │  └─ Evaluation Metrics
+│  └─ xgboost
+│     ├─ Evaluation Metrics
+├─ README.md
+├─ utils
+└─ 최종산출물
+
+```
 
 ---
 

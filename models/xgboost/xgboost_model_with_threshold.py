@@ -43,7 +43,7 @@ scale_pos_weight = neg / pos
 print(f"Class ratio (neg:pos): {neg}:{pos} => scale_pos_weight: {scale_pos_weight:.2f}")
 
 # Train-test split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y)
 
 
 # XGBoost Classifier initialization
@@ -52,7 +52,6 @@ xgb_clf = XGBClassifier(
     eval_metric='logloss',
     scale_pos_weight=scale_pos_weight,
     n_jobs=-1,
-    random_state=42
     )
 
 pipeline = Pipeline(steps=[
@@ -70,7 +69,7 @@ param_grid = {
     'classifier__min_child_weight': [1, 3, 5],
 }
 
-cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+cv = StratifiedKFold(n_splits=5, shuffle=True)
 
 # GridSearchCV
 grid = GridSearchCV(
@@ -123,7 +122,7 @@ probs = best_model.predict_proba(X_test)[:, 1]
 #     print('Confusion Matrix:')
 #     print(confusion)
 
-thresholds = np.arange(0.4, 0.61, 0.01)
+thresholds = np.arange(0.35, 0.51, 0.01)
 
 results = []
 
